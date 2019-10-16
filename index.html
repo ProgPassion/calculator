@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Calculator</title>	
+		<style>
+			
+			button {
+				width: 80px;
+				height: 60px;				
+			}
+			.output {
+				width: 332px;
+				height: 100px;
+				background-color: #333;
+				color: white;
+				padding-top: 20px;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="output" id="output"></div>
+			<div class="input">
+				<div>
+					<button onclick="input(this.innerHTML)">7</button>
+					<button onclick="input(this.innerHTML)">8</button>
+					<button onclick="input(this.innerHTML)">9</button>
+					<button>/</button>			
+				</div>
+				<div>
+					<button onclick="input(this.innerHTML)">4</button>
+					<button onclick="input(this.innerHTML)">5</button>
+					<button onclick="input(this.innerHTML)">6</button>
+					<button>*</button>			
+				</div>
+				<div>
+					<button onclick="input(this.innerHTML)">1</button>
+					<button onclick="input(this.innerHTML)">2</button>
+					<button onclick="input(this.innerHTML)">3</button>
+					<button>-</button>			
+				</div>
+				<div>
+					<button>.</button>
+					<button onclick="input(this.innerHTML)">0</button>
+					<button>=</button>
+					<button>+</button>			
+				</div>
+				<div>
+					<button style="width: 332px;">Clear</button>
+				</div>
+			</div>	
+		</div>
+		<script>
+			var numPressedVal = 0;
+			document.getElementById("output").innerHTML = numPressedVal;
+			function input(val) {
+				
+			}
+		</script>
+	</body>
+
+</html>
