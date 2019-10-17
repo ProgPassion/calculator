@@ -13,8 +13,9 @@
 				height: 100px;
 				background-color: #333;
 				color: white;
-				padding-top: 20px;
+				padding: 30px 10px;
 				box-sizing: border-box;
+				font-size: 40px;
 			}
 		</style>
 	</head>
@@ -23,41 +24,113 @@
 			<div class="output" id="output"></div>
 			<div class="input">
 				<div>
-					<button onclick="input(this.innerHTML)">7</button>
-					<button onclick="input(this.innerHTML)">8</button>
-					<button onclick="input(this.innerHTML)">9</button>
-					<button>/</button>			
+					<button onclick="numInput(this.innerHTML)">7</button>
+					<button onclick="numInput(this.innerHTML)">8</button>
+					<button onclick="numInput(this.innerHTML)">9</button>
+					<button onclick="symInput(this.innerHTML)">/</button>			
 				</div>
 				<div>
-					<button onclick="input(this.innerHTML)">4</button>
-					<button onclick="input(this.innerHTML)">5</button>
-					<button onclick="input(this.innerHTML)">6</button>
-					<button>*</button>			
+					<button onclick="numInput(this.innerHTML)">4</button>
+					<button onclick="numInput(this.innerHTML)">5</button>
+					<button onclick="numInput(this.innerHTML)">6</button>
+					<button onclick="symInput(this.innerHTML)">*</button>			
 				</div>
 				<div>
-					<button onclick="input(this.innerHTML)">1</button>
-					<button onclick="input(this.innerHTML)">2</button>
-					<button onclick="input(this.innerHTML)">3</button>
-					<button>-</button>			
+					<button onclick="numInput(this.innerHTML)">1</button>
+					<button onclick="numInput(this.innerHTML)">2</button>
+					<button onclick="numInput(this.innerHTML)">3</button>
+					<button onclick="symInput(this.innerHTML)">-</button>			
 				</div>
 				<div>
-					<button>.</button>
-					<button onclick="input(this.innerHTML)">0</button>
-					<button>=</button>
-					<button>+</button>			
+					<button onclick="numInput(this.innerHTML)">.</button>
+					<button onclick="numInput(this.innerHTML)">0</button>
+					<button onclick="symInput(this.innerHTML)">=</button>
+					<button onclick="symInput(this.innerHTML)">+</button>			
 				</div>
 				<div>
-					<button style="width: 332px;">Clear</button>
+					<button style="width: 332px;" onclick="clearInput()">Clear</button>
 				</div>
 			</div>	
 		</div>
 		<script>
-			var numPressedVal = 0;
-			document.getElementById("output").innerHTML = numPressedVal;
-			function input(val) {
+			var numPressedVal = "0";
+			var regexDigit = /[0-9]/;
+			var regexSymbo = /[\+\-\*\/]/;
+			var tmpExpression = {"currentVal": null, "mathSign": null, "previousVal": null};
+			tmpExpression.currentVal = numPressedVal;
+
+
+			function numInput(val) {
+			
+				if(regexDigit.test(val)) {
+					(numPressedVal === "0") ? numPressedVal = val : numPressedVal += "" + val;		
+				}
+				else if(val === "." && !numPressedVal.includes(".")) 	
+					numPressedVal += val;
 				
+				tmpExpression.currentVal = numPressedVal
+				document.getElementById("output").innerHTML = tmpExpression.currentVal;
+
 			}
+
+
+			function mathLogic() {
+
+				var tmpSum;
+				if(tmpExpression.previousVal === null) {
+
+					tmpExpression.previousVal = tmpExpression.currentVal;
+					return tmpExpression.currentVal;
+				}
+				else {
+					switch(tmpExpression.mathSign) {
+						case "+" :
+							tmpSum = Number(tmpExpression.previousVal) + Number(tmpExpression.currentVal);
+							tmpExpression.previousVal = tmpSum;
+							return tmpSum;
+						case "-" :
+							tmpSum = Number(tmpExpression.previousVal) - Number(tmpExpression.currentVal);
+							tmpExpression.previousVal = tmpSum;
+							return tmpSum;
+						case "*" :
+							tmpSum = Number(tmpExpression.previousVal) * Number(tmpExpression.currentVal);
+							tmpExpression.previousVal = tmpSum;
+							return tmpSum;
+						case "/" :
+							tmpSum = Number(tmpExpression.previousVal) / Number(tmpExpression.currentVal);
+							tmpExpression.previousVal = tmpSum;
+							return tmpSum;	
+					}
+				}	
+			}
+
+
+			function symInput(val) {
+
+				tmpExpression.currentVal = mathLogic();
+
+				if(regexSymbo.test(val))
+					tmpExpression.mathSign = val;
+
+				if(val === "=") {
+					tmpExpression.mathSign = null;
+					tmpExpression.previousVal = null;
+				}
+
+				numPressedVal = "0";
+				document.getElementById("output").innerHTML = tmpExpression.currentVal;				
+			}
+
+			function clearInput() {
+				numPressedVal = "0";
+				tmpExpression.currentVal  = numPressedVal;
+				tmpExpression.mathSign    = null;
+				tmpExpression.previousVal = null;
+				document.getElementById("output").innerHTML = tmpExpression.currentVal;	
+			}
+
+			document.getElementById("output").innerHTML = tmpExpression.currentVal;
+				
 		</script>
 	</body>
-
 </html>
